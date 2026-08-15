@@ -1,0 +1,51 @@
+[package]
+name = "mcpg-plugin-backend-grpc"
+version = "0.1.0-alpha.15"
+license = "BUSL-1.1"
+edition = "2024"
+description = """
+gRPC backend binding plugin for mcpg. Dispatches tool calls as
+gRPC-over-HTTP JSON POSTs to `{endpoint}/{service}/{method}`, reusing
+the shared net-core HTTP core (per-cred reqwest client cache, DNS
+rebinding guard, per-call CEL + cred:// resolution, body-limit
+truncation). Mirrors the http/sql/nats/kafka first-party plugin shape;
+the main mcpg binary loads this crate at runtime via the plugin
+registry and carries no inline gRPC dispatch code.
+"""
+
+[lib]
+# cdylib: the .so the gateway's native_loader dlopens. rlib: in-tree
+# unit tests + the eager new() constructor (tests + the static-firstparty
+# path until the gateway cutover lands).
+crate-type = ["cdylib", "rlib"]
+
+[features]
+# Default OFF so the workspace build does not emit `mcpg_plugin_register`
+# from the rlib and collide with the other plugin rlibs. Standalone
+# cdylib builds (nx docker:build / OCI publish) opt in.
+default = []
+cdylib-export = []
+# Declared empty so the SDK macro's `register_static` accessor
+# (`#[cfg(feature = "static-firstparty")]`) does not trip
+# `unexpected_cfgs`. grpc is consumed as a cdylib.
+static-firstparty = []
+
+[dependencies]
+mcpg-plugin-protocol = { git = "https://github.com/mcpg-dev/mcpg-plugin-protocol", tag = "v0.1.0-beta.13", version = "=0.1.0-beta.13" }
+# Shared HTTP-over-reqwest core: NetworkProfileRuntime (per-cred client
+# cache + DNS-rebinding guard + per-call CEL/cred:// resolution), the
+# exec primitives, and the downstream-error retry shaping.
+mcpg-plugin-backend-net-core = { git = "https://github.com/mcpg-dev/mcpg-plugin-backend-net-core", tag = "v0.1.0-beta.13", version = "=0.1.0-beta.13" }
+mcpg-plugin-sdk      = { git = "https://github.com/mcpg-dev/mcpg-plugin-sdk", tag = "v0.1.0-beta.13", version = "=0.1.0-beta.13", features = ["static-firstparty"] }
+mcpg-plugin-host     = { git = "https://github.com/mcpg-dev/mcpg-plugin-host", tag = "v0.1.0-beta.13", version = "=0.1.0-beta.13" }
+async-trait    = "0.1"
+futures        = "0.3"
+serde          = { version = "1", features = ["derive"] }
+serde_json     = "1"
+tokio          = { version = "1", features = ["sync", "rt", "rt-multi-thread", "macros", "time"] }
+tracing        = "0.1"
+url            = "2"
+
+[dev-dependencies]
+tokio    = { version = "1", features = ["macros", "rt", "rt-multi-thread", "net", "io-util", "time"] }
+wiremock = "0.6"

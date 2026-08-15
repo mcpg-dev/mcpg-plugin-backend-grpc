@@ -1,0 +1,18 @@
+schema: mcpg.dev/plugin/v1
+id: dev.mcpg.backend.grpc
+name: gRPC Binding
+license: BUSL-1.1
+description: |
+  Dispatches tool calls as gRPC-over-HTTP JSON POSTs against an
+  operator-configured endpoint, service, and method
+  (`POST {endpoint}/{service}/{method}` with a JSON body). Async via
+  reqwest through the shared net-core core; the DNS rebinding guard
+  rejects private/loopback resolved addresses unless explicitly opted
+  in. Per-caller `cred://` references in url + header values resolve
+  through the gateway's credential cache at dispatch time, with an
+  internal ClientRegistry caching one `reqwest::Client` per
+  resolved-credential digest.
+class: backend
+runtime: native-cdylib-v1
+protocol_version: "1.0"
+required_capabilities: [network_outbound]
