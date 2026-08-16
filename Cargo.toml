@@ -1,6 +1,6 @@
 [package]
 name = "mcpg-plugin-backend-grpc"
-version = "0.1.0-alpha.15"
+version = "0.1.0-alpha.16"
 license = "BUSL-1.1"
 edition = "2024"
 description = """
@@ -31,13 +31,13 @@ cdylib-export = []
 static-firstparty = []
 
 [dependencies]
-mcpg-plugin-protocol = { git = "https://github.com/mcpg-dev/mcpg-plugin-protocol", tag = "v0.1.0-beta.13", version = "=0.1.0-beta.13" }
+mcpg-plugin-protocol = { git = "https://github.com/mcpg-dev/mcpg-plugin-protocol", tag = "v0.1.0-beta.14", version = "=0.1.0-beta.14" }
 # Shared HTTP-over-reqwest core: NetworkProfileRuntime (per-cred client
 # cache + DNS-rebinding guard + per-call CEL/cred:// resolution), the
 # exec primitives, and the downstream-error retry shaping.
-mcpg-plugin-backend-net-core = { git = "https://github.com/mcpg-dev/mcpg-plugin-backend-net-core", tag = "v0.1.0-beta.13", version = "=0.1.0-beta.13" }
-mcpg-plugin-sdk      = { git = "https://github.com/mcpg-dev/mcpg-plugin-sdk", tag = "v0.1.0-beta.13", version = "=0.1.0-beta.13", features = ["static-firstparty"] }
-mcpg-plugin-host     = { git = "https://github.com/mcpg-dev/mcpg-plugin-host", tag = "v0.1.0-beta.13", version = "=0.1.0-beta.13" }
+mcpg-plugin-backend-net-core = { git = "https://github.com/mcpg-dev/mcpg-plugin-backend-net-core", tag = "v0.1.0-beta.14", version = "=0.1.0-beta.14" }
+mcpg-plugin-sdk      = { git = "https://github.com/mcpg-dev/mcpg-plugin-sdk", tag = "v0.1.0-beta.14", version = "=0.1.0-beta.14", features = ["static-firstparty"] }
+mcpg-plugin-host     = { git = "https://github.com/mcpg-dev/mcpg-plugin-host", tag = "v0.1.0-beta.14", version = "=0.1.0-beta.14" }
 async-trait    = "0.1"
 futures        = "0.3"
 serde          = { version = "1", features = ["derive"] }
