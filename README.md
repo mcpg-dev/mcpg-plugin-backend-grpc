@@ -76,7 +76,7 @@ mcp:
 | `headers` | map<string,string> | `{}` | Request headers. Values are CEL templates and may carry `${cred://issuer/target}`. |
 | `timeout_ms` | u64 | `2000` | Per-call timeout. Must be greater than 0. |
 | `max_response_bytes` | usize | `65536` | Response body cap; oversized bodies are truncated. Must be greater than 0. |
-| `allow_private_backends` | bool | `false` | Permit connections to private/loopback/link-local addresses. Container-network deployments only. |
+| `allow_private_backends` | bool | `gateway.server.allow_private_backends` | Permit connections to private/loopback/link-local addresses. The gateway sets it for every binding from `gateway.server.allow_private_backends`; a value in the binding is replaced. |
 
 ## Security
 `url`, `service`, and `method` are transport-only routing facts, so
